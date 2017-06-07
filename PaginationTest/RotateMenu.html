@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Title</title>
+    <script src="jquery-1.12.4.js"></script>
+    <script>
+        $(function () {
+//            判断如果是小于800，直接return
+            var isClickMenu = false;
+            var isChangeTitle = false;
+            var isHideTitle = false;
+            $(window).scroll(function () {
+                if (getBodyWidth() <= 800) {
+                    return false;
+                }
+                var isTopVisiable = $('.top_nav_content').is(":visible");
+                $('.next_title_content').css({position: "fixed"});
+                var scrollTop = $(this).scrollTop();
+                if (!isClickMenu) {
+                    if (isTopVisiable) {
+                        if (scrollTop <= 343) {
+                            if (scrollTop > 253) {
+                                clearAllTime();
+                            }
+                            $('.next_title_content').css({top: (343 - scrollTop)});
+                        }
+                        if (scrollTop >= 343) {
+                            $('.next_title_content').css({top: 0});
+                        }
+                    } else {
+                        if (scrollTop <= 90) {
+//                            clearAllTime();
+                            $('.next_title_content').css({top: (90 - scrollTop)});
+                        }
+                        if (scrollTop >=90) {
+                            $('.next_title_content').css({top: 0});
+                        }
+                    }
+                }
+                if (scrollTop>=90) {
+                    if (!isChangeTitle) {
+                        clearAllTime();
+                        $('.active_desc').css({opacity: 0});
+                        $('.active_desc').html("<span>xyf的个人主页</span>");
+                        $('.active_desc').animate({opacity: 1},700,function () {
+                            isHideTitle = true;
+                        });
+                        $('.show_blog_name').animate({opacity: 0},700);
+                        isChangeTitle = true;
+                    }
+                }else {
+                    if (isHideTitle) {
+                        $('.active_desc').animate({opacity: 0},700,function () {
+                            isChangeTitle = false;
+                        });
+                        $('.show_blog_name').animate({opacity: 1},600);
+                        isHideTitle = false;
+                    }
+                }
+            });
+            var isShow = false;
+//            点击导航栏按钮，如果小于800，显示左侧的导航栏，大于800显示顶部的
+            $('.menu').click(function () {
+                var isVis = $('.top_nav_content').is(":visible");
+                if (isVis) {
+//                    $('.next_title_content').css({position: "relative"});
+                    var time = $('body,html').scrollTop();
+                    $('body,html').animate({scrollTop: 0}, parseInt(time*1.5), function () {
+                        $('.menu .ham').css({
+                            "background-color": "#00b19e",
+                            transform: "rotateZ(0deg)", top: "16px", height: "1.5px"
+                        });
+                        $('.menu').removeClass("final");
+                        $('.top_nav_content').animate({height: "0px"}, 600, function () {
+                            $('.top_nav_content').hide();
+                        });
+                        $('.next_title_content').animate({top: 90}, 700, function () {
+                        });
+                    });
+                    $('body').css({"background-color": "white"});
+                } else {
+                    if (getBodyWidth() > 800) {
+                        var time = $('body,html').scrollTop();
+                        $('body,html').animate({scrollTop: 0}, parseInt(time*1.5), function () {
+                            $('.menu .ham').css({
+                                "background-color": "transparent",
+                                transform: "rotateZ(-45deg)", top: "8px"
+                            });
+                            $('.menu').addClass("final");
+                            setTimeout(function () {
+                                $('.top_nav_content').show(0)
+                                $('.top_nav_content').animate({height: "250px"}, 700, function () {
+                                });
+                                $('.next_title_content').animate({top: 343}, 800, function () {
+                                });
+                            }, 100);
+                        });
+                    }
+                    $('body').css({"background-color": "white"});
+                }
+                if (getBodyWidth() <= 800) {
+                    var left_px = $('.small_left_nav').css('left');
+                    var left = parseInt(left_px.substr(0, left_px.length - 2));
+                    if (left < 0) {
+//                        先将它放在一个靠近的位置
+                        var width = $('.small_left_nav').css('width').substr(0,
+                            $('.small_left_nav').css('width').length-2);
+                        var to_left = parseInt(width) + 60;
+                        var final = (-to_left);
+                        $('.small_left_nav').css({left: final});
+//                        载入
+                        $('.small_left_nav').animate({left: "0%"}, 500, function () {
+                            isShow = true;
+                        });
+//                        开始变换图标
+                        $('.menu .ham').css({
+                            "background-color": "transparent",
+                            transform: "rotateZ(-45deg)", top: "8px"
+                        });
+                        $('.menu').addClass("final");
+                        $('body').css({"background-color": "rgba(0,0,0,0.2)"});
+                    } else {
+//                        这里用处不大，因为监听了整个html
+                        $('.menu .ham').css({
+                            "background-color": "#00b19e",
+                            transform: "rotateZ(0deg)", top: "16px", height: "1.5px"
+                        });
+                        $('.menu').removeClass("final");
+                        var width = $('.small_left_nav').css('width');
+                        var to_left = parseInt(width.substr(0, width.length - 2)) + 60;
+                        var final = (-to_left) + "px";
+                        $('.small_left_nav').animate({left: final}, 500, function () {
+                            $('.small_left_nav').css({left: "-72%"});
+                        });
+                        $('body').css({"background-color": "white"});
+                    }
+                }
+            });
+
+//            点击之后，显示侧边栏的标签选项
+            var nextTemp = 1;
+            $('.left_menu_icon').click(function () {
+                if (nextTemp % 2 == 0) {
+                    $('.left_menu_icon').removeClass("left_menu_click");
+                } else {
+                    $('.left_menu_icon').addClass("left_menu_click");
+                }
+                nextTemp++;
+            });
+
+//            点击之后，隐藏左侧导航栏
+            $('html').click(function (e) {
+                var width = $('.small_left_nav').css('width');
+                if (e.clientX > parseInt(width.substr(0, width.length - 2))) {
+                    var to_left = parseInt(width.substr(0, width.length - 2)) + 60;
+                    if (isShow) {
+                        var final = (-to_left) + "px";
+                        $('.menu .ham').css({
+                            "background-color": "#00b19e",
+                            transform: "rotateZ(0deg)", top: "16px", height: "1.5px"
+                        });
+                        $('.menu').removeClass("final");
+                        $('.small_left_nav').animate({left: final}, 500, function () {
+                            $('.small_left_nav').css({left: "-72%"});
+                        });
+                        $('body').css({"background-color": "white"});
+                        isShow = false;
+                    }
+                }
+            });
+
+            function getBodyWidth() {
+                var width = parseInt($('body').css('width').substr(0, $('body').css('width').length-2));
+                return width;
+            }
+
+            var arr = ["这里可以看到的是我的博客", "实际上也没什么好看的"];
+            var which = 0;
+            var shuxian_temp = 1;
+            var shuxian_interval = setInterval(function () {
+                if (shuxian_temp % 2 == 0) {
+                    $('.shuxian').css({opacity: 0});
+                } else {
+                    $('.shuxian').css({opacity: 1});
+                }
+                shuxian_temp++;
+            }, 300);
+            var type_timeout = setTimeout(startTypeing, 2000);
+            var type_interval = null;
+            var delete_timeout = null;
+
+            function startTypeing() {
+                if (which == 2) {
+                    clearAllTime();
+                    $('.shuxian').remove();
+                    return false;
+                }
+                var my_typeing = arr[which];
+                var i = 0;
+                type_interval = setInterval(function () {
+                    $('.shuxian').before("<span>" + my_typeing.charAt(i) + "</span>");
+                    i++;
+                    if (i == my_typeing.length) {
+                        clearInterval(type_interval);
+                        delete_timeout = setTimeout(startDeleting, 2000);
+                    }
+                }, 280);
+            }
+
+            var deleteInterval = null;
+
+            function startDeleting() {
+                var demo = arr[which % 2].length - 1;
+                deleteInterval = setInterval(function () {
+                    $('.shuxian').prev().remove();
+                    demo--;
+                    if (demo < 0) {
+                        which++;
+                        clearInterval(deleteInterval);
+                        type_timeout = setTimeout(startTypeing, 2000);
+                    }
+                }, 250);
+            }
+
+            function clearAllTime() {
+                clearInterval(deleteInterval);
+                clearInterval(shuxian_interval);
+                clearInterval(type_interval);
+                clearTimeout(delete_timeout);
+                clearTimeout(type_timeout);
+            }
+        });
+    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            -webkit-transition: background-color 0.5s;
+            -moz-transition: background-color 0.5s;
+            -ms-transition: background-color 0.5s;
+            -o-transition: background-color 0.5s;
+            transition: background-color 0.5s;
+        }
+
+        .first_content {
+            width: 100%;
+            height: 100%;
+        }
+        .next_title_content .shuxian {
+            font-weight: 800;
+            opacity: 0;
+            -webkit-transition: opacity 0.2s;
+            -moz-transition: opacity 0.2s;
+            -ms-transition: opacity 0.2s;
+            -o-transition: opacity 0.2s;
+            transition: opacity 0.2s;
+        }
+
+        .next_title_content .menu {
+            margin-right: 10%;
+            width: 44px;
+            height: 44px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .next_title_content .menu .ham {
+            width: 25px;
+            height: 1.5px;
+            display: block;
+            position: relative;
+            left: 8.5px;
+            top: 16px;
+            background-color: #00b19e;
+            -webkit-transition: all ease 0.5s;
+            -moz-transition: all ease 0.5s;
+            -o-transition: all ease 0.5s;
+            transition: all ease 0.5s;
+        }
+
+        .next_title_content .menu::before {
+            content: '';
+            width: 25px;
+            left: 8.5px;
+            height: 2px;
+            top: 8px;
+            position: relative;
+            background-color: #00b19e;
+            display: block;
+            -webkit-transition: all ease 0.5s;
+            -moz-transition: all ease 0.5s;
+            -o-transition: all ease 0.5s;
+            transition: all ease 0.5s;
+        }
+
+        .next_title_content .menu::after {
+            content: '';
+            width: 25px;
+            top: 24px;
+            height: 2px;
+            position: relative;
+            left: 8.5px;
+            background-color: #00b19e;
+            display: block;
+            -webkit-transition: all ease 0.5s;
+            -moz-transition: all ease 0.5s;
+            -o-transition: all ease 0.5s;
+            transition: all ease 0.5s;
+        }
+
+        .final::before {
+            -webkit-transition: all ease 0.5s;
+            -moz-transition: all ease 0.5s;
+            -o-transition: all ease 0.5s;
+            transition: all ease 0.5s;
+            height: 3px;
+            -webkit-transform: rotateZ(-45deg) translate3d(-9px, -3px, 0);
+            -moz-transform: rotateZ(-45deg) translate3d(-9px, -3px, 0);
+            -ms-transform: rotateZ(-45deg) translate3d(-9px, -3px, 0);
+            -o-transform: rotateZ(-45deg) translate3d(-9px, -3px, 0);
+            transform: rotateZ(-45deg) translate3d(-9px, -3px, 0);
+        }
+
+        .final::after {
+            -webkit-transition: all ease 0.5s;
+            -moz-transition: all ease 0.5s;
+            -o-transition: all ease 0.5s;
+            transition: all ease 0.5s;
+            height: 3px;
+            -webkit-transform: rotateZ(45deg) translate3d(-5px, -16px, 0);
+            -moz-transform: rotateZ(45deg) translate3d(-5px, -16px, 0);
+            -ms-transform: rotateZ(45deg) translate3d(-5px, -16px, 0);
+            -o-transform: rotateZ(45deg) translate3d(-5px, -16px, 0);
+            transform: rotateZ(45deg) translate3d(-5px, -16px, 0);
+        }
+
+        .left_menu_icon {
+            width: 44px;
+            height: 44px;
+            display: block;
+        }
+
+        .left_menu_icon:hover {
+            cursor: pointer;
+        }
+
+        .left_menu_icon::before {
+            position: relative;
+            width: 26px;
+            height: 3px;
+            content: '';
+            background-color: #00b19e;
+            display: block;
+            top: 10px;
+            left: 9px;
+            -webkit-transition: all ease 0.5s;
+            -moz-transition: all ease 0.5s;
+            -ms-transition: all ease 0.5s;
+            -o-transition: all ease 0.5s;
+            transition: all ease 0.5s;
+            transform: rotateZ(-45deg) translate3d(-4px, 0, 0);
+        }
+
+        .left_menu_icon::after {
+            position: relative;
+            width: 26px;
+            height: 3px;
+            content: '';
+            background-color: #00b19e;
+            display: block;
+            top: 30px;
+            left: 9px;
+            -webkit-transition: all ease 0.5s;
+            -moz-transition: all ease 0.5s;
+            -ms-transition: all ease 0.5s;
+            -o-transition: all ease 0.5s;
+            transition: all ease 0.5s;
+            -webkit-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
+            -moz-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
+            -ms-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
+            -o-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
+            transform: rotateZ(45deg) translate3d(-4px, 0, 0);
+        }
+
+        .left_menu_click::before {
+            -webkit-transition: all ease 0.5s;
+            -moz-transition: all ease 0.5s;
+            -ms-transition: all ease 0.5s;
+            -o-transition: all ease 0.5s;
+            transition: all ease 0.5s;
+            -webkit-transform: rotateZ(45deg) translate3d(4px, 0, 0) !important;
+            -moz-transform: rotateZ(45deg) translate3d(4px, 0, 0) !important;
+            -ms-transform: rotateZ(45deg) translate3d(4px, 0, 0) !important;
+            -o-transform: rotateZ(45deg) translate3d(4px, 0, 0) !important;
+            transform: rotateZ(45deg) translate3d(4px, 0, 0) !important;
+        }
+
+        .left_menu_click::after {
+            -webkit-transition: all ease 0.5s;
+            -moz-transition: all ease 0.5s;
+            -ms-transition: all ease 0.5s;
+            -o-transition: all ease 0.5s;
+            transition: all ease 0.5s;
+            -webkit-transform: rotateZ(-45deg) translate3d(4px, 0, 0) !important;
+            -moz-transform: rotateZ(-45deg) translate3d(4px, 0, 0) !important;
+            -ms-transform: rotateZ(-45deg) translate3d(4px, 0, 0) !important;
+            -o-transform: rotateZ(-45deg) translate3d(4px, 0, 0) !important;
+            transform: rotateZ(-45deg) translate3d(4px, 0, 0) !important;
+            transform: rotateZ(-45deg) translate3d(4px, 0, 0) !important;
+        }
+
+        .top_nav_content {
+            width: 100%;
+            height: 0px;
+            background-color: #494949;
+            display: none;
+            border: 2px solid #494949;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .top_nav_content .left_nav {
+            list-style: none;
+            width: 30%;
+            margin: 0% 9%;
+            padding-top: 4%;
+            text-align: center;
+            float: left;
+        }
+
+        .top_nav_content .left_nav li {
+            font-size: 26px;
+            color: white;
+            font-family: "FangSong";
+            padding-bottom: 2%;
+        }
+
+        .top_nav_content .left_nav li span:hover {
+            cursor: pointer;
+        }
+
+        .top_nav_content .left_nav li span::after {
+            content: '';
+            width: 0;
+            height: 1px;
+            display: block;
+            background: white;
+            margin: auto;
+            -webkit-transition: width 0.3s;
+            -moz-transition: width 0.3s;
+            -ms-transition: width 0.3s;
+            -o-transition: width 0.3s;
+            transition: width 0.3s;
+        }
+
+        .top_nav_content .left_nav li span:hover::after {
+            width: 1.8em;
+        }
+
+        .top_nav_content .right_nav {
+            float: left;
+            width: 30%;
+            height: 100%;
+            margin-left: 10%;
+            overflow: hidden;
+        }
+
+        .top_nav_content .background {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            -webkit-transition: transform 0.5s;
+            -moz-transition: transform 0.5s;
+            -ms-transition: transform 0.5s;
+            -o-transition: transform 0.5s;
+            transition: transform 0.5s;
+            -webkit-transform: rotateZ(26deg);
+            -moz-transform: rotateZ(26deg);
+            -ms-transform: rotateZ(26deg);
+            -o-transform: rotateZ(26deg);
+            transform: rotateZ(26deg);
+            overflow: hidden;
+        }
+
+        @media only screen and (min-width: 1100px) {
+            .right_nav .background .to_github img {
+                width: 100px;
+                margin-left: 12%;
+                margin-top: 19%
+            }
+
+            .right_nav .background .to_sina img {
+                width: 62px;
+                margin-left: 32%;
+                margin-top: 20%
+            }
+        }
+
+        @media only screen and (max-width: 1100px) and (min-width: 851px) {
+            .right_nav .background .to_github img {
+                width: 100px;
+                margin-left: 5%;
+                margin-top: 28%
+            }
+
+            .right_nav .background .to_sina img {
+                width: 62px;
+                margin-left: 28%;
+                margin-top: 20%
+            }
+        }
+
+        @media only screen and (max-width: 850px) {
+            .right_nav .background .to_github img {
+                width: 100px;
+                margin-left: 1%;
+                margin-top: 36%
+            }
+
+            .right_nav .background .to_sina img {
+                width: 62px;
+                margin-left: 20%;
+                margin-top: 20%
+            }
+        }
+
+        @media only screen and (min-width: 800px) {
+            .show_blog_name {
+                padding-top: 25px;
+                padding-bottom: 25px;
+                text-align: center;
+                font-family: cursive, "FangSong";
+                font-size: 28px;
+                color: #494949;
+                opacity: 0.8;
+                -webkit-transition: all ease 0.8s;
+                -moz-transition: all ease 0.8s;
+                -ms-transition: all ease 0.8s;
+                -o-transition: all ease 0.8s;
+                transition: all ease 0.8s;
+                height: auto;
+            }
+
+            .next_title_content .small_screen_title {
+                font-size: 26px;
+                color: transparent;
+                font-family: cursive;
+                opacity: 0;
+                margin-left: 10%;
+                -webkit-transition: all ease 0.5s;
+                -moz-transition: all ease 0.5s;
+                -ms-transition: all ease 0.5s;
+                -o-transition: all ease 0.5s;
+                transition: all ease 0.5s;
+            }
+
+            .next_title_content .active_desc {
+                padding-top: 8px;
+                font-family: cursive, "FangSong";
+                font-size: 23px;
+                opacity: 1;
+                height: auto;
+            }
+            .next_title_content {
+                padding-top: 20px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                border-bottom: 1px solid snow;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
+                padding-bottom: 20px;
+                vertical-align: middle;
+                position: fixed;
+                top: 90px;
+                width: 100%;
+            }
+        }
+
+        @media only screen and (max-width: 800px) {
+            .small_left_nav {
+                width: 40%;
+                height: 100%;
+                background-color: white;
+                position: fixed;
+                z-index: 3000;
+                top: 0;
+                left: -72%;
+                box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+            }
+
+            .show_blog_name {
+                padding-top: 0px;
+                padding-bottom: 0px;
+                text-align: center;
+                font-family: cursive, "FangSong";
+                font-size: 28px;
+                color: #494949;
+                opacity: 0 !important;
+                height: 0 !important;
+                -webkit-transition: all ease 0.8s;
+                -moz-transition: all ease 0.8s;
+                -ms-transition: all ease 0.8s;
+                -o-transition: all ease 0.8s;
+                transition: all ease 0.8s;
+            }
+
+            .next_title_content .small_screen_title {
+                font-size: 26px;
+                color: #00b19e;
+                font-family: cursive;
+                margin-left: 10%;
+                -webkit-transition: all ease 0.5s;
+                -moz-transition: all ease 0.5s;
+                -ms-transition: all ease 0.5s;
+                -o-transition: all ease 0.5s;
+                transition: all ease 0.5s;
+            }
+
+            .next_title_content .active_desc {
+                padding-top: 8px;
+                font-family: cursive, "FangSong";
+                font-size: 23px;
+                opacity: 0 !important;
+                -webkit-transition: opacity 0.5s;
+                -moz-transition: opacity 0.5s;
+                -ms-transition: opacity 0.5s;
+                -o-transition: opacity 0.5s;
+                transition: opacity 0.5s;
+                height: 0;
+            }
+            .next_title_content {
+                padding-top: 20px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                border-bottom: 1px solid snow;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
+                padding-bottom: 20px;
+                vertical-align: middle;
+                width: 100%;
+                top:0 !important;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            .small_left_nav {
+                width: 50%;
+                height: 100%;
+                background-color: white;
+                position: fixed;
+                z-index: 3000;
+                top: 0;
+                left: -72%;
+                box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        @media only screen and (max-width: 430px) {
+            .small_left_nav {
+                width: 70%;
+                height: 100%;
+                background-color: white;
+                position: fixed;
+                z-index: 3000;
+                top: 0;
+                left: -72%;
+                box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        .left_menu_icon_div {
+            margin-top: 1000px;
+        }
+    </style>
+</head>
+<body>
+<div class="first_content">
+    <div class="top_nav_content">
+        <nav class="left_nav">
+            <li><span class="to_blog_link">博客</span></li>
+            <li><span class="to_image_link">图片</span></li>
+            <li><span class="to_music_link">音乐</span></li>
+            <li><span class="to_collection_link">收藏</span></li>
+        </nav>
+        <div class="right_nav">
+            <div class="background">
+                <a class="to_github" href="https://github.com/demoyf/" target="_blank"><img
+                        src="github_icon.jpg" width="100%"></a>
+                <a class="to_sina" href="http://weibo.com/2545689252/profile?rightmod=1&wvr=6&mod=personinfo"
+                   target="_blank">
+                    <img src="weibo.png" width="100%"></a>
+            </div>
+        </div>
+    </div>
+    <div class="show_blog_name">
+        <span>XYF的个人主页</span>
+    </div>
+    <div class="next_title_content">
+        <span class="small_screen_title">xyf</span>
+        <span class="active_desc"><span class="shuxian">|</span></span>
+        <a href="#" class="menu">
+            <span class="ham">
+            </span>
+        </a>
+    </div>
+</div>
+<div class="left_menu_icon_div">
+        <span class="left_menu_icon">
+        </span>
+</div>
+<div class="small_left_nav"></div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.12.4.js"></script>
+    <script src="layer.js"></script>
+    <style>
+        .demo {
+            display: none;
+        }
+        .demo div {
+            color: green;
+        }
+    </style>
+    <script>
+        $(function () {
+//            全局配置皮肤效果，单个open的优先级比他高
+            layer.config({
+                skin: 'layui-layer-lan;'
+            });
+            $('.layer').click(function () {
+                layer.msg('11111', {time: 100, icon: 5}, function () {
+//                    可以有多个按钮，但是后续两个回调函数是针对yes和no的，及时换成其他按钮，一样的效果？
+//                    只有confirm
+                        layer.confirm("确认弹出？", {btn: ['yes', 'btn1']}, function () {
+                            layer.open({
+                                title:'选择图片',
+                                type: 1,
+                                area: ['600px', '300px'],
+                                shadeClose: false,
+//                        content:$('.demo').html()
+                                content: $('.demo')
+                            });
+                            $('.next').click(function () {
+//                  ajax 回调完结束，很帅
+                                var ii = layer.load();
+                                //此处用setTimeout演示ajax的回调
+                                setTimeout(function () {
+                                    layer.close(ii);
+                                    layer.open({
+                                        type: 2,
+                                        content: 'https://www.baidu.com' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                                    });
+                                }, 1000);
+                            });
+                        });
+                    },
+                    function () {
+
+                    }, function () {
+
+                    }
+                );
+            });
+        });
+    </script>
+</head>
+<body>
+<button class="layer">button</button>
+<div class="demo">
+    <div>
+        hhhhhh,demohhhh
+        <button class="next">layer</button>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!--设置宽和高是当前设备的宽高-->
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1"/>
+    <!--设置关键字，搜索引擎查询的时候会根据关键字进行归类，874字符-->
+    <meta name="keywords" content="HTML,ASP,PHP,SQL">
+    <!--网页描述，150字符-->
+    <meta name="description" content="150 words" />
+    <!--搜索引擎是否可以查询或者索引本页面的文件或者是链接-->
+    <meta name="robots" content="index,follow" />
+    <!--
+        all：文件将被检索，且页面上的链接可以被查询；
+        none：文件将不被检索，且页面上的链接不可以被查询；
+        index：文件将被检索；
+        follow：页面上的链接可以被查询；
+        noindex：文件将不被检索；
+        nofollow：页面上的链接不可以被查询。
+     -->
+
+    <!--页面重定向或者刷新，content 时间 url-->
+    <!--<meta http-equiv="refresh" content="0;url=" />-->
+
+    <!--作者名-->
+    <meta name="author" content="author name" />
+    <title>Title</title>
+    <script src="layerTest/jquery-1.12.4.js"></script>
+    <script>
+        $(function () {
+            $(window).scroll(function() {
+                var gun = $(this).scrollTop();
+                $('.left_blog .content').each(function () {
+                    var top1 = $(this).offset().top;
+                    var top = top1-gun;
+                    if (top <= 100) {
+                        $(this).addClass('left_background');
+                    }else{
+                        $(this).removeClass('left_background');
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        .f_d {
+            margin-top: 1000px;
+            margin-bottom: 3000px;
+            width: 10%;
+            height: 90px;
+            background-color: rebeccapurple;
+        }
+        .fixed_top {
+            background-color: green;
+        }
+    </style>
+</head>
+
+
+<body>
+<div class="f_d">
+
+</div>
+</body>
+</html>

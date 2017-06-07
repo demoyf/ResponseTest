@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery.js"></script>
+    <script src="ajaxfileupload.js"></script>
+    <script>
+        $(function () {
+           $('#demo').click( function() {
+                $.ajaxFileUpload({
+                    url:'demo.php',
+                    fileElementId:'showUpload',
+                    secureuri: false,
+                    dataType :'text',
+                    async:true,
+                    success:function (data,status) {
+                        alert(data);
+                    },
+                    error:function (data, status, e) {
+//                        alert(e);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<input id="showUpload" name="image" type="file"
+       class="showUpload" accept="image/png,image/jpeg">
+<button id ='demo'>submit</button>
+</body>
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Title</title>
+    <!--justify-content: 水平位置的摆放方式。align-items：垂直方向的摆放方式
+    flex 和position：absolute 同时使用，子元素的flex无效。flex可以嵌套使用
+    vw:viewport 百分比，1vw = 1%屏幕宽度，响应式字体
+    transaction：指定变换的属性和时间，平移或者旋转等需要指定的是transform。
+    注意需要在最外层选择一个容器充当‘舞台’，perspective属性。如果只是想显示占据容器大小的内容，
+    需要指定overflow为hidden。
+    -->
+    <script src="jquery-1.12.4.js"></script>
+    <link rel="stylesheet" href="large_screen.css">
+    <link rel="stylesheet" href="small_screen.css">
+    <link rel="stylesheet" href="effect_details.css">
+    <script>
+        /*        $(function () {
+         $(window).scroll(function () {
+         var gun = $(this).scrollTop();
+         $('.left_blog .content').each(function () {
+         var top1 = $(this).offset().top;
+         var top = top1 - gun;
+         if (top <= 200) {
+         $(this).css({"background-color": 'slateblue', "color": 'white'});
+         } else {
+         $(this).css({"background-color": 'white', "color": 'slateblue'});
+         }
+         });
+         });
+         });*/
+    </script>
+    <script>
+        $(function () {
+//            判断所有的img都加载完成，必须是Deferred对象
+            var defereds = [];
+            $("img").each(function() {
+                var dfd = $.Deferred();
+                $(this).load(dfd.resolve);
+                defereds.push(dfd);
+            });
+            $.when.apply(null, defereds).done(function() {
+                $('#loading-center-absolute').animate({left:"-20%", "opacity":0},3000,function () {
+                    $('#loading').animate({opacity: 0}, 300,function () {
+                        $('#loading').hide(0);
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        body {
+            padding: 0%;
+            margin: 0%;
+        }
+        #loading{
+            background-color: #35203b;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            z-index: 1;
+            margin-top: 0px;
+            top: 0px;
+        }
+        #loading-center{
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        #loading-center-absolute {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 50px;
+            width: 300px;
+            margin-top: -25px;
+            margin-left: -150px;
+        }
+        .object{
+            width: 18px;
+            height: 18px;
+            background-color: #FFF;
+            float: left;
+            margin-top: 15px;
+            margin-right: 15px;
+            -moz-border-radius: 50% 50% 50% 50%;
+            -webkit-border-radius: 50% 50% 50% 50%;
+            border-radius: 50% 50% 50% 50%;
+            -webkit-animation: object 1s infinite;
+            animation: object 1s infinite;
+        }
+        .object:last-child {
+            margin-right: 0px;
+        }
+
+        .object:nth-child(9){
+            -webkit-animation-delay: 0.9s;
+            animation-delay: 0.9s;
+        }
+        .object:nth-child(8){
+            -webkit-animation-delay: 0.8s;
+            animation-delay: 0.8s;
+        }
+        .object:nth-child(7){
+            -webkit-animation-delay: 0.7s;
+            animation-delay: 0.7s;
+        }
+        .object:nth-child(6){
+            -webkit-animation-delay: 0.6s;
+            animation-delay: 0.6s;
+        }
+        .object:nth-child(5){
+            -webkit-animation-delay: 0.5s;
+            animation-delay: 0.5s;
+        }
+        .object:nth-child(4){
+            -webkit-animation-delay: 0.4s;
+            animation-delay: 0.4s;
+        }
+        .object:nth-child(3){
+            -webkit-animation-delay: 0.3s;
+            animation-delay: 0.3s;
+        }
+        .object:nth-child(2){
+            -webkit-animation-delay: 0.2s;
+            animation-delay: 0.2s;
+        }
+
+        @-webkit-keyframes object{
+            /*完整的就是这样啦*/
+            50% {
+                -ms-transform: translate(0,-50px);
+                -webkit-transform: translate(0,-50px);
+                transform: translate(0,-50px);
+            }
+            100%{
+                -ms-transform: translate(0,0px);
+                -webkit-transform: translate(0,0px);
+                transform: translate(0,0px);
+            }
+        }
+        @keyframes object{
+            50% {
+                -ms-transform: translate(0,-50px);
+                -webkit-transform: translate(0,-50px);
+                transform: translate(0,-50px);
+            }
+            100%{
+                -ms-transform: translate(0,0px);
+                -webkit-transform: translate(0,0px);
+                transform: translate(0,0px);
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="loading">
+    <div id="loading-center">
+        <div id="loading-center-absolute">
+            <div class="object"></div>
+            <div class="object"></div>
+            <div class="object"></div>
+            <div class="object"></div>
+            <div class="object"></div>
+            <div class="object"></div>
+            <div class="object"></div>
+            <div class="object"></div>
+            <div class="object"></div>
+        </div>
+    </div>
+</div>
+<div class="timeline_content">
+    <div class="left_blog">
+        <div class="content">
+            <figure class="effect_1">
+                <img src="img/1.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-left">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="right_blog">
+        <div class="content">
+            <figure class="effect_2">
+                <img src="img/12.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-right">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="left_blog">
+        <div class="content">
+            <figure class="effect_3">
+                <img src="img/2.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-left">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="right_blog">
+        <div class="content">
+            <figure class="effect_4">
+                <img src="img/3.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-right">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="left_blog">
+        <div class="content">
+            <figure class="effect_1">
+                <img src="img/4.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-left">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="right_blog">
+        <div class="content">
+            <figure class="effect_2">
+                <img src="img/5.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-right">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="left_blog">
+        <div class="content">
+            <figure class="effect_3">
+                <img src="img/6.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-left">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="right_blog">
+        <div class="content">
+            <figure class="effect_4">
+                <img src="img/7.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-right">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="left_blog">
+        <div class="content">
+            <figure class="effect_3">
+                <img src="img/8.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-left">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="right_blog">
+        <div class="content">
+            <figure class="effect_2">
+                <img src="img/9.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-right">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="left_blog">
+        <div class="content">
+            <figure class="effect_1">
+                <img src="img/10.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-left">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="right_blog">
+        <div class="content">
+            <figure class="effect_2">
+                <img src="img/11.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-right">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="left_blog">
+        <div class="content">
+            <figure class="effect_3">
+                <img src="img/12.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-left">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="right_blog">
+        <div class="content">
+            <figure class="effect_4">
+                <img src="img/13.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-right">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="left_blog">
+        <div class="content">
+            <figure class="effect_1">
+                <img src="img/14.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-left">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+    <div class="right_blog">
+        <div class="content">
+            <figure class="effect_3">
+                <img src="img/15.jpg">
+                <figcaption>
+                    <h2>这是一篇博客</h2>
+                    <p>这是博客的详细描述，哈哈哈哈哈，要看清楚这个描述说，才能点击，
+                        好的，哈哈哈电视卡好的开始的撒环保健康喝多少啊</p>
+                </figcaption>
+            </figure>
+        </div>
+        <div class="arrow-right">
+        </div>
+        <div class="time_content">
+            <div class="time">
+                <span>12<sup>TH</sup></span>
+                <span>APR</span>
+                <span>2017</span>
+            </div>
+            <div class="line">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

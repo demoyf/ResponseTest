@@ -1,0 +1,30 @@
+<html>
+<head>
+    <script type="text/javascript" src="layerTest/jquery-1.12.4.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("button").click(function(){
+                var test = $(this).offset();
+                var width = ($(this).css('width'));
+                var num = width.substr(0,width.length-2);
+                var newPos = new Object();
+                newPos.left =test.left+ parseInt(num);
+                newPos.top = test.top;
+                alert(newPos.left);
+                $('p').offset(newPos);
+            });
+        });
+    </script>
+    <style>
+        .next {
+            margin-left: 20%;
+        }
+    </style>
+</head>
+<body>
+<div class="next">
+    <p>This is a paragraph.</p>
+    <button>设置新的偏移</button>
+</div>
+</body>
+</html>

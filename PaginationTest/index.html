@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.12.4.js"></script>
+    <script>
+        $(function () {
+            bindPageClick();
+            var pageSum = 12;
+            if (pageSum < 4) {
+                var paginationHtml = "";
+                for (i = 1; i <= pageSum; i++) {
+                    if (i == 1) {
+                        paginationHtml += "<div class='current'><span>"
+                            + i+ "</span></div>";
+                    }else {
+                        paginationHtml += "<div ><span>"
+                            +i+ "</span></div>";
+                    }
+                }
+                $('.pagination_page').html(paginationHtml);
+                bindPageClick();
+            }
+            $('.left_turn').click(function () {
+                var current = $('.current');
+                var page = current.children("span").html();
+                page = parseInt(page);
+                var nextSum = current.nextAll().length;
+                if (page == 1) {
+                    return false;
+                }
+                if (nextSum == 2) {
+                    if (page - 1 > 1) {
+                        $('.pagination_page').children(":last")
+                            .animate({width: "0px", opacity: 0}, 300, function () {
+                                $(this).remove();
+                            });
+                        var html = "<div style='width: 0px;opacity: 0'><span>"
+                            + (page - 2) + "</span></div>";
+                        $('.pagination_page').children(":first").before(html);
+                        $('.pagination_page').children(":first")
+                            .animate({width: "60px", opacity: 1}, 300);
+                        bindPageClick();
+                    }
+                }
+                if (nextSum == 3) {
+                    $('.pagination_page').children(":last")
+                        .animate({width: "0px", opacity: 0}, 300, function () {
+                            $(this).remove();
+                        });
+                    var html = "<div style='width: 0px;opacity: 0'><span>"
+                        + (page - 1) + "</span></div>";
+                    $('.pagination_page').children(":first").before(html);
+                    $('.pagination_page').children(":first")
+                        .animate({width: "60px", opacity: 1}, 300);
+                    bindPageClick();
+                }
+                current.prev().addClass("current");
+                current.removeClass("current");
+            });
+            $('.right_turn').click(function () {
+                var current = $('.current');
+                var page = current.children("span").html();
+                page = parseInt(page);
+                var nextSum = current.nextAll().length;
+                if (page == pageSum) {
+                    return false;
+                }
+                if (nextSum == 1) {
+                    if (page + 1 < pageSum) {
+                        $('.pagination_page').children(":first")
+                            .animate({width: "0px", opacity: 0}, 400, function () {
+                                $(this).remove();
+                            });
+                        var html = "<div style='width: 0px;opacity: 0'><span>"
+                            + (page + 2) + "</span></div>";
+                        $('.pagination_page').append(html);
+                        $('.pagination_page').children(":last")
+                            .animate({width: "60px", opacity: 1}, 400);
+                        bindPageClick();
+                    }
+                }
+                if (nextSum == 0) {
+                    if (page != pageSum) {
+                        $('.pagination_page').children(":first")
+                            .animate({width: "0px", opacity: 0}, 400, function () {
+                                $(this).remove();
+                            });
+                        var html = "<div style='width: 0px;opacity: 0'><span>"
+                            + (page + 1) + "</span></div>";
+                        $('.pagination_page').append(html);
+                        $('.pagination_page').children(":last")
+                            .animate({width: "60px", opacity: 1}, 400);
+                        bindPageClick();
+                    }
+                }
+                current.next().addClass("current");
+                current.removeClass("current");
+            });
+
+            function bindPageClick() {
+                $('.pagination_page div span').click(function () {
+                    $('.current').removeClass("current");
+                    $(this).parent().addClass("current");
+                });
+            }
+        });
+    </script>
+    <style>
+        .my_pagination {
+            display: flex;
+            flex-direction: row;
+        }
+        .pagination_page {
+            display: flex;
+            flex-direction: row;
+        }
+        .left_turn, .right_turn {
+            font-size: large;
+            margin-top: 10px;
+            width: 20px;
+            height: 20px;
+            background-color:white;
+            border-radius: 50%;
+            text-align: center;
+            flex-shrink: 0;
+            color: #00b19e;
+        }
+        .pagination_page div {
+            display: flex;
+            flex-direction: column-reverse;
+            width: 60px;
+            height: 60px;
+            padding: 0px;
+            margin: 0px;
+            list-style: none;
+            text-align: center;
+            vertical-align: bottom;
+            color: #bfbfbf;
+            -webkit-transition: color 1s;
+            -moz-transition: color 1s;
+            -ms-transition: color 1s;
+            -o-transition: color 1s;
+            transition: color 1s;
+        }
+        .pagination_page div::before {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 1px;
+            top: 28px;
+            background-color: #bfbfbf;
+        }
+        .pagination_page div::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: 18px;
+            margin-left: 20px;
+            background-color: #bfbfbf;
+            border-radius: 50%;
+            border: 5px solid white;
+            -webkit-transition: background-color 1s;
+            -moz-transition: background-color 1s;
+            -ms-transition: background-color 1s;
+            -o-transition: background-color 1s;
+            transition: background-color 1s;
+        }
+        .pagination_page div span:hover {
+            cursor: pointer;
+        }
+        .pagination_page .current {
+            color: #00b19e;
+            -webkit-transition: color 1s;
+            -moz-transition: color 1s;
+            -ms-transition: color 1s;
+            -o-transition: color 1s;
+            transition: color 1s;
+        }
+        .pagination_page .current::after {
+            background-color: #00b19e;
+            -webkit-transition: background-color 1s;
+            -moz-transition: background-color 1s;
+            -ms-transition: background-color 1s;
+            -o-transition: background-color 1s;
+            transition: background-color 1s;
+        }
+        .left_turn:hover, .right_turn:hover {
+            cursor: pointer;
+            background-color: #00b19e;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="my_pagination">
+    <div class="left_turn"><span>&lt;</span></div>
+    <div class="pagination_page">
+        <div class="current"><span>1</span></div>
+        <div><span>2</span></div>
+        <div><span>3</span></div>
+        <div><span>4</span></div>
+    </div>
+    <div class="right_turn"><span>&gt;</span></div>
+</div>
+</body>
+</html>
