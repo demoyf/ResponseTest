@@ -34,29 +34,61 @@
 //                            clearAllTime();
                             $('.next_title_content').css({top: (90 - scrollTop)});
                         }
-                        if (scrollTop >=90) {
+                        if (scrollTop >= 90) {
                             $('.next_title_content').css({top: 0});
                         }
                     }
                 }
-                if (scrollTop>=90) {
-                    if (!isChangeTitle) {
-                        clearAllTime();
-                        $('.active_desc').css({opacity: 0});
-                        $('.active_desc').html("<span>xyf的个人主页</span>");
-                        $('.active_desc').animate({opacity: 1},700,function () {
-                            isHideTitle = true;
-                        });
-                        $('.show_blog_name').animate({opacity: 0},700);
-                        isChangeTitle = true;
+                if (isTopVisiable) {
+                    if (scrollTop >= 343) {
+                        if (!isChangeTitle) {
+                            clearAllTime();
+                            $('.active_desc').css({opacity: 0, color: "#00b19e"});
+                            $('.active_desc').html("<span>xyf的个人主页</span>");
+                            $('.active_desc').animate({opacity: 1}, 700, function () {
+                                isHideTitle = true;
+                            });
+                            $('.show_blog_name').animate({opacity: 0}, 700);
+                            isChangeTitle = true;
+                        }
+                    } else {
+                        if (isHideTitle) {
+                            $('.active_desc').animate({opacity: 0}, 700, function () {
+                                isChangeTitle = false;
+                            });
+                            $('.show_blog_name').animate({opacity: 1}, 600);
+                            isHideTitle = false;
+                        }
+                    }
+                } else {
+                    if (scrollTop >= 90) {
+                        if (!isChangeTitle) {
+                            clearAllTime();
+                            $('.active_desc').css({opacity: 0, color: "#00b19e"});
+                            $('.active_desc').html("<span>xyf的个人主页</span>");
+                            $('.active_desc').animate({opacity: 1}, 500, function () {
+                                isHideTitle = true;
+                            });
+                            $('.show_blog_name').animate({opacity: 0}, 500);
+                            isChangeTitle = true;
+                        }
+                    } else {
+                        if (isHideTitle) {
+                            $('.active_desc').animate({opacity: 0}, 500, function () {
+                                isChangeTitle = false;
+                            });
+                            $('.show_blog_name').animate({opacity: 1}, 500);
+                            isHideTitle = false;
+                        }
+                    }
+                }
+                if (isTopVisiable) {
+                    if (scrollTop<=360) {
+                        $('.tag_nav').css({top: (510 - scrollTop)});
                     }
                 }else {
-                    if (isHideTitle) {
-                        $('.active_desc').animate({opacity: 0},700,function () {
-                            isChangeTitle = false;
-                        });
-                        $('.show_blog_name').animate({opacity: 1},600);
-                        isHideTitle = false;
+                    if (scrollTop<=160) {
+                        $('.tag_nav').css({top: (260 - scrollTop)});
                     }
                 }
             });
@@ -67,7 +99,7 @@
                 if (isVis) {
 //                    $('.next_title_content').css({position: "relative"});
                     var time = $('body,html').scrollTop();
-                    $('body,html').animate({scrollTop: 0}, parseInt(time*1.5), function () {
+                    $('body,html').animate({scrollTop: 0}, parseInt(time * 1.5), function () {
                         $('.menu .ham').css({
                             "background-color": "#00b19e",
                             transform: "rotateZ(0deg)", top: "16px", height: "1.5px"
@@ -76,14 +108,16 @@
                         $('.top_nav_content').animate({height: "0px"}, 600, function () {
                             $('.top_nav_content').hide();
                         });
-                        $('.next_title_content').animate({top: 90}, 700, function () {
+                        $('.next_title_content').animate({top: 90}, 650, function () {
                         });
+                        $('.tag_nav').animate({top: 260}, 650);
                     });
                     $('body').css({"background-color": "white"});
+                    $('.next_title_content').css({"background-color": "white", opacity: 1});
                 } else {
                     if (getBodyWidth() > 800) {
                         var time = $('body,html').scrollTop();
-                        $('body,html').animate({scrollTop: 0}, parseInt(time*1.5), function () {
+                        $('body,html').animate({scrollTop: 0}, parseInt(time * 1.5), function () {
                             $('.menu .ham').css({
                                 "background-color": "transparent",
                                 transform: "rotateZ(-45deg)", top: "8px"
@@ -93,12 +127,14 @@
                                 $('.top_nav_content').show(0)
                                 $('.top_nav_content').animate({height: "250px"}, 700, function () {
                                 });
-                                $('.next_title_content').animate({top: 343}, 800, function () {
+                                $('.next_title_content').animate({top: 343}, 750, function () {
                                 });
                             }, 100);
+                            $('.tag_nav').animate({top: 510}, 650);
                         });
                     }
                     $('body').css({"background-color": "white"});
+                    $('.next_title_content').css({"background-color": "white", opacity: 1});
                 }
                 if (getBodyWidth() <= 800) {
                     var left_px = $('.small_left_nav').css('left');
@@ -106,7 +142,7 @@
                     if (left < 0) {
 //                        先将它放在一个靠近的位置
                         var width = $('.small_left_nav').css('width').substr(0,
-                            $('.small_left_nav').css('width').length-2);
+                            $('.small_left_nav').css('width').length - 2);
                         var to_left = parseInt(width) + 60;
                         var final = (-to_left);
                         $('.small_left_nav').css({left: final});
@@ -121,6 +157,7 @@
                         });
                         $('.menu').addClass("final");
                         $('body').css({"background-color": "rgba(0,0,0,0.2)"});
+                        $('.next_title_content').css({"background-color": "rgba(0,0,0,0.01)", opacity: 0.4});
                     } else {
 //                        这里用处不大，因为监听了整个html
                         $('.menu .ham').css({
@@ -135,19 +172,23 @@
                             $('.small_left_nav').css({left: "-72%"});
                         });
                         $('body').css({"background-color": "white"});
+                        $('.next_title_content').css({"background-color": "white", opacity: 1});
                     }
                 }
             });
 
 //            点击之后，显示侧边栏的标签选项
-            var nextTemp = 1;
             $('.left_menu_icon').click(function () {
-                if (nextTemp % 2 == 0) {
-                    $('.left_menu_icon').removeClass("left_menu_click");
-                } else {
+                var bodyWidth = getBodyWidth();;
+                var left_menu_icon_left = parseInt($('.tag_nav').css('left')) +
+                    parseInt($('.tag_nav').css('width'));
+                if (left_menu_icon_left>bodyWidth) {
+                    $('.tag_nav').animate({left: "76%"},500);
                     $('.left_menu_icon').addClass("left_menu_click");
+                }else {
+                    $('.left_menu_icon').removeClass("left_menu_click");
+                    $('.tag_nav').animate({left: "96%"},1000);
                 }
-                nextTemp++;
             });
 
 //            点击之后，隐藏左侧导航栏
@@ -166,13 +207,14 @@
                             $('.small_left_nav').css({left: "-72%"});
                         });
                         $('body').css({"background-color": "white"});
+                        $('.next_title_content').css({"background-color": "white", opacity: 1});
                         isShow = false;
                     }
                 }
             });
 
             function getBodyWidth() {
-                var width = parseInt($('body').css('width').substr(0, $('body').css('width').length-2));
+                var width = parseInt($('body').css('width').substr(0, $('body').css('width').length - 2));
                 return width;
             }
 
@@ -210,7 +252,6 @@
             }
 
             var deleteInterval = null;
-
             function startDeleting() {
                 var demo = arr[which % 2].length - 1;
                 deleteInterval = setInterval(function () {
@@ -245,10 +286,13 @@
             transition: background-color 0.5s;
         }
 
-        .first_content {
+        .header_content {
             width: 100%;
             height: 100%;
+            display: flex;
+            flex-direction: column;
         }
+
         .next_title_content .shuxian {
             font-weight: 800;
             opacity: 0;
@@ -337,54 +381,6 @@
             transform: rotateZ(45deg) translate3d(-5px, -16px, 0);
         }
 
-        .left_menu_icon {
-            width: 44px;
-            height: 44px;
-            display: block;
-        }
-
-        .left_menu_icon:hover {
-            cursor: pointer;
-        }
-
-        .left_menu_icon::before {
-            position: relative;
-            width: 26px;
-            height: 3px;
-            content: '';
-            background-color: #00b19e;
-            display: block;
-            top: 10px;
-            left: 9px;
-            -webkit-transition: all ease 0.5s;
-            -moz-transition: all ease 0.5s;
-            -ms-transition: all ease 0.5s;
-            -o-transition: all ease 0.5s;
-            transition: all ease 0.5s;
-            transform: rotateZ(-45deg) translate3d(-4px, 0, 0);
-        }
-
-        .left_menu_icon::after {
-            position: relative;
-            width: 26px;
-            height: 3px;
-            content: '';
-            background-color: #00b19e;
-            display: block;
-            top: 30px;
-            left: 9px;
-            -webkit-transition: all ease 0.5s;
-            -moz-transition: all ease 0.5s;
-            -ms-transition: all ease 0.5s;
-            -o-transition: all ease 0.5s;
-            transition: all ease 0.5s;
-            -webkit-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
-            -moz-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
-            -ms-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
-            -o-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
-            transform: rotateZ(45deg) translate3d(-4px, 0, 0);
-        }
-
         .left_menu_click::before {
             -webkit-transition: all ease 0.5s;
             -moz-transition: all ease 0.5s;
@@ -408,7 +404,6 @@
             -moz-transform: rotateZ(-45deg) translate3d(4px, 0, 0) !important;
             -ms-transform: rotateZ(-45deg) translate3d(4px, 0, 0) !important;
             -o-transform: rotateZ(-45deg) translate3d(4px, 0, 0) !important;
-            transform: rotateZ(-45deg) translate3d(4px, 0, 0) !important;
             transform: rotateZ(-45deg) translate3d(4px, 0, 0) !important;
         }
 
@@ -484,17 +479,86 @@
             overflow: hidden;
         }
 
+        .small_left_nav li {
+            list-style: none;
+            margin-top: 2.5%;
+            margin-bottom: 0.5%;
+            font-size: 23px;
+            text-align: left;
+            padding-left: 15%;
+        }
+
+        .small_left_nav li span:hover {
+            color: #00b19e;
+            cursor: pointer;
+        }
+
+        .small_left_nav li.to_li, .small_left_nav li.about_li {
+            width: 60%;
+            text-align: left;
+            padding-left: 5%;
+            color: #00b19e;
+            font-family: cursive;
+            font-size: 24px;
+        }
+
+        .small_left_nav .github_li a img {
+            width: 100px;
+        }
+
+        .small_left_nav .sina_li a img {
+            width: 59px;
+            padding-left: 8%;
+        }
+
+        .small_left_nav .github_li, .small_left_nav .sina_li {
+            padding-left: 5%;
+        }
+
         @media only screen and (min-width: 1100px) {
             .right_nav .background .to_github img {
                 width: 100px;
                 margin-left: 12%;
                 margin-top: 19%
             }
-
             .right_nav .background .to_sina img {
                 width: 62px;
                 margin-left: 32%;
                 margin-top: 20%
+            }
+            .blog_content {
+                width: 75%;
+                height: auto;
+                display: flex;
+                flex-direction: row;
+                margin-top: 120px;
+                justify-content: space-around;
+                flex-wrap: wrap;
+            }
+            .a_blog {
+                padding: 10px;
+                width: 30%;
+                /*margin: 1.5%;*/
+                margin-bottom: 50px;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            .tag_nav {
+                width: 18%;
+                font-size: 20px;
+                padding: 20px 1%;
+                position: fixed;
+                left: 78%!important;
+                top: 260px;
+                display: flex;
+                flex-direction: row;
+                -webkit-transition: left 0.5s;
+                -moz-transition: left 0.5s;
+                -ms-transition: left 0.5s;
+                -o-transition: left 0.5s;
+                transition: left 0.5s;
             }
         }
 
@@ -509,6 +573,83 @@
                 width: 62px;
                 margin-left: 28%;
                 margin-top: 20%
+            }
+            .tag_nav {
+                width: 22%;
+                font-size: 20px;
+                padding: 20px 1%;
+                position: fixed;
+                left: 96%;
+                top: 260px;
+                display: flex;
+                flex-direction: row;
+                z-index: 200;
+            }
+            .left_menu_icon {
+                margin-top: 20px;
+                width: 44px;
+                height: 44px;
+                display: block;
+            }
+
+            .left_menu_icon:hover {
+                cursor: pointer;
+            }
+
+            .left_menu_icon::before {
+                position: relative;
+                width: 26px;
+                height: 3px;
+                content: '';
+                background-color: #00b19e;
+                display: block;
+                top: 10px;
+                left: 9px;
+                -webkit-transition: all ease 0.5s;
+                -moz-transition: all ease 0.5s;
+                -ms-transition: all ease 0.5s;
+                -o-transition: all ease 0.5s;
+                transition: all ease 0.5s;
+                transform: rotateZ(-45deg) translate3d(-4px, 0, 0);
+            }
+            .left_menu_icon::after {
+                position: relative;
+                width: 26px;
+                height: 3px;
+                content: '';
+                background-color: #00b19e;
+                display: block;
+                top: 30px;
+                left: 9px;
+                -webkit-transition: all ease 0.5s;
+                -moz-transition: all ease 0.5s;
+                -ms-transition: all ease 0.5s;
+                -o-transition: all ease 0.5s;
+                transition: all ease 0.5s;
+                -webkit-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
+                -moz-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
+                -ms-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
+                -o-transform: rotateZ(45deg) translate3d(-4px, 0, 0);
+                transform: rotateZ(45deg) translate3d(-4px, 0, 0);
+            }
+            .blog_content {
+                width: 95%;
+                height: auto;
+                display: flex;
+                flex-direction: row;
+                margin-top: 120px;
+                justify-content: space-around;
+                flex-wrap: wrap;
+            }
+            .a_blog {
+                padding: 10px;
+                width: 30%;
+                /*margin: 1.5%;*/
+                margin-bottom: 50px;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
         }
 
@@ -563,18 +704,24 @@
                 opacity: 1;
                 height: auto;
             }
+
             .next_title_content {
                 padding-top: 20px;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                border-bottom: 1px solid snow;
                 box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
                 padding-bottom: 20px;
                 vertical-align: middle;
                 position: fixed;
                 top: 90px;
                 width: 100%;
+                z-index: 100;
+                background-color: white;
+            }
+
+            .small_left_nav {
+                display: none;
             }
         }
 
@@ -588,6 +735,11 @@
                 top: 0;
                 left: -72%;
                 box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                font-family: "FangSong";
+                color: #494949;
             }
 
             .show_blog_name {
@@ -630,17 +782,20 @@
                 transition: opacity 0.5s;
                 height: 0;
             }
+
             .next_title_content {
                 padding-top: 20px;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                border-bottom: 1px solid snow;
                 box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
                 padding-bottom: 20px;
                 vertical-align: middle;
                 width: 100%;
-                top:0 !important;
+                top: 0 !important;
+                z-index: 100;
+                position: fixed;
+                background-color: white;
             }
         }
 
@@ -654,6 +809,11 @@
                 top: 0;
                 left: -72%;
                 box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                font-family: "FangSong";
+                color: #494949;
             }
         }
 
@@ -667,16 +827,42 @@
                 top: 0;
                 left: -72%;
                 box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                font-family: "FangSong";
+                color: #494949;
             }
         }
-
-        .left_menu_icon_div {
-            margin-top: 1000px;
+        .blog_content .a_blog .blog_time {
+            text-align: right;
+            color: #494949;
+            font-family: cursive;
+            padding-bottom: 0;
+            margin-bottom: 0;
+            font-weight: 400;
+        }
+        .blog_content .a_blog .blog_title_div {
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        .blog_content .a_blog .blog_title_div .blog_title {
+            font-family: "FangSong";
+            color: #494949;
+            text-align: center;
+            font-weight: 400;
+        }
+        .tag_nav a {
+            font-size: 20px;
+            margin: 0 2%;
+        }
+        .tag_content {
+            padding: 10px;
+            box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
-<div class="first_content">
+<div class="header_content">
     <div class="top_nav_content">
         <nav class="left_nav">
             <li><span class="to_blog_link">博客</span></li>
@@ -705,11 +891,149 @@
             </span>
         </a>
     </div>
+    <div class="blog_content">
+        <div class="a_blog">
+            <div>
+                <img src="img/1.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+        <div class="a_blog">
+            <div>
+                <img src="img/6.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+        <div class="a_blog">
+            <div>
+                <img src="img/2.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+        <div class="a_blog">
+            <div>
+                <img src="img/3.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+        <div class="a_blog">
+            <div>
+                <img src="img/4.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+        <div class="a_blog">
+            <div>
+                <img src="img/5.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+        <div class="a_blog">
+            <div>
+                <img src="img/1.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+        <div class="a_blog">
+            <div>
+                <img src="img/6.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+        <div class="a_blog">
+            <div>
+                <img src="img/2.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+        <div class="a_blog">
+            <div>
+                <img src="img/3.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+        <div class="a_blog">
+            <div>
+                <img src="img/4.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+        <div class="a_blog">
+            <div>
+                <img src="img/5.jpg" width="100%">
+            </div>
+            <div class="blog_title_div">
+                <h2 class="blog_title">这是一篇博客</h2>
+                <h5 class="blog_time">2016-03-07 22:22:22</h5>
+            </div>
+        </div>
+    </div>
+    <div class="tag_nav">
+        <div class="left_menu_icon">
+        </div>
+        <div class="tag_content">
+            <a>first</a>
+            <a>first</a>
+            <a>first</a>
+            <a>first</a>
+            <a>first</a>
+            <a>first</a>
+            <a>first</a>
+            <a>first</a>
+            <a>first</a>
+        </div>
+
+    </div>
 </div>
-<div class="left_menu_icon_div">
-        <span class="left_menu_icon">
-        </span>
+<div class="small_left_nav">
+    <li class="to_li">To</li>
+    <li><span>博客</span></li>
+    <li><span>图片</span></li>
+    <li><span>音乐</span></li>
+    <li><span>收藏</span></li>
+    <li class="about_li">About</li>
+    <li class="github_li">
+        <a class="to_github" href="https://github.com/demoyf/" target="_blank"><img
+                src="github_icon.jpg" width="100%"></a>
+    </li>
+    <li class="sina_li">
+        <a class="to_sina" href="http://weibo.com/2545689252/profile?rightmod=1&wvr=6&mod=personinfo"
+           target="_blank">
+            <img src="weibo.png" width="100%"></a>
+    </li>
 </div>
-<div class="small_left_nav"></div>
 </body>
 </html>
