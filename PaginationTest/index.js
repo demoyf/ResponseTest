@@ -112,19 +112,17 @@ $(function () {
         } else {
             if (getBodyWidth() > 800) {
                 var time = $('body,html').scrollTop();
-                $('body,html').animate({scrollTop: 0}, parseInt(time * 1.5), function () {
+                $('body,html').animate({scrollTop: 0}, parseInt(time), function () {
                     $('.menu .ham').css({
                         "background-color": "transparent",
                         transform: "rotateZ(-45deg)", top: "8px"
                     });
                     $('.menu').addClass("final");
-                    setTimeout(function () {
-                        $('.top_nav_content').show(0)
-                        $('.top_nav_content').animate({height: "250px"}, 500, function () {
-                        });
-                        $('.next_title_content').animate({top: 343}, 550, function () {
-                        });
-                    }, 100);
+                    $('.top_nav_content').show(0)
+                    $('.top_nav_content').animate({height: "250px"}, 500, function () {
+                    });
+                    $('.next_title_content').animate({top: 343}, 550, function () {
+                    });
                     $('.tag_nav').animate({top: 510}, 550);
                 });
             }
@@ -310,5 +308,102 @@ $(function () {
         clearInterval(type_interval);
         clearTimeout(delete_timeout);
         clearTimeout(type_timeout);
+    }
+    initPage();
+    bindPageClick();
+    function initPage() {
+        /*                var total = parseInt($('.timeline_content').attr("id"));
+         var per_page = parseInt($('.timeline_content').attr("data-role"));*/
+        var total = 100;
+        var per_page = 6;
+        var pageSum = 1;
+        if (total==0) {
+            pageSum = 1;
+        }else{
+            if (total%per_page==0) {
+                pageSum = total / per_page;
+            }else {
+                pageSum = parseInt(total / per_page) + 1;
+            }
+        }
+        if (pageSum < 4) {
+            var paginationHtml = "";
+            for (i = 1; i <= pageSum; i++) {
+                if (i == 1) {
+                    paginationHtml += "<li class='current'>" + i +
+                        "</li>";
+                }else {
+                    paginationHtml += "<li>" + i +
+                        "</li>";
+                }
+            }
+            $('.pagination_div .number_li_div').html(paginationHtml);
+            bindPageClick();
+        }
+        $('.to_prev').click(function () {
+            var current = $('.pagination_div .number_li_div .current');
+            var page = current.html();
+            page = parseInt(page);
+            var nextSum = current.nextAll().length;
+            if (page == 1) {
+                return false;
+            }
+            if (nextSum == 2) {
+                if (page - 1 > 1) {
+                    $('.pagination_div  .number_li_div').children(":last").remove();
+                    var html = "<li>"
+                        + (page - 2) + "</li>";
+                    $('.pagination_div .number_li_div').children(":first").before(html);
+                    bindPageClick();
+                }
+            }
+            if (nextSum == 3) {
+                $('.pagination_div .number_li_div').children(":last").remove();
+                var html = "<li>"
+                    + (page - 1) + "</li>";
+                $('.pagination_div  .number_li_div').children(":first").before(html);
+                bindPageClick();
+            }
+            current.prev().addClass("current");
+            current.removeClass("current");
+//                    changeTimeLine();
+        });
+        $('.to_next').click(function () {
+            var current = $('.pagination_div  .number_li_div .current');
+            var page = current.html();
+            page = parseInt(page);
+            var nextSum = current.nextAll().length;
+            if (page == pageSum) {
+                return false;
+            }
+            if (nextSum == 1) {
+                if (page + 1 < pageSum) {
+                    $('.pagination_div  .number_li_div').children(":first").remove();
+                    var html = "<li>"
+                        + (page + 2) + "</li>";
+                    $('.pagination_div  .number_li_div').append(html);
+                    bindPageClick();
+                }
+            }
+            if (nextSum == 0) {
+                if (page != pageSum) {
+                    $('.pagination_div  .number_li_div').children(":first").remove();
+                    var html = "<li>"
+                        + (page + 1) + "</li>";
+                    $('.pagination_div  .number_li_div').append(html);
+                    bindPageClick();
+                }
+            }
+            current.next().addClass("current");
+            current.removeClass("current");
+//                    changeTimeLine();
+        });
+    }
+    function bindPageClick() {
+        $('.pagination_div .number_li_div li').click(function () {
+            $('.pagination_div .number_li_div li.current').removeClass("current");
+            $(this).addClass("current");
+//                    changeTimeLine();
+        });
     }
 });

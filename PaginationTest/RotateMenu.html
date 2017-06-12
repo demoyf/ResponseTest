@@ -11,103 +11,7 @@
     <link href="index.css" rel="stylesheet">
     <script>
         $(function () {
-            initPage();
-            bindPageClick();
-            function initPage() {
-/*                var total = parseInt($('.timeline_content').attr("id"));
-                var per_page = parseInt($('.timeline_content').attr("data-role"));*/
-                var total = 100;
-                var per_page = 6;
-                var pageSum = 1;
-                if (total==0) {
-                    pageSum = 1;
-                }else{
-                    if (total%per_page==0) {
-                        pageSum = total / per_page;
-                    }else {
-                        pageSum = parseInt(total / per_page) + 1;
-                    }
-                }
-                if (pageSum < 4) {
-                    var paginationHtml = "";
-                    for (i = 1; i <= pageSum; i++) {
-                        if (i == 1) {
-                            paginationHtml += "<li class='current'>" + i +
-                                "</li>";
-                        }else {
-                            paginationHtml += "<li>" + i +
-                                "</li>";
-                        }
-                    }
-                    $('.pagination_div .number_li_div').html(paginationHtml);
-                    bindPageClick();
-                }
-                $('.to_prev').click(function () {
-                    var current = $('.pagination_div .number_li_div .current');
-                    var page = current.html();
-                    page = parseInt(page);
-                    var nextSum = current.nextAll().length;
-                    if (page == 1) {
-                        return false;
-                    }
-                    if (nextSum == 2) {
-                        if (page - 1 > 1) {
-                            $('.pagination_div  .number_li_div').children(":last").remove();
-                            var html = "<li>"
-                                + (page - 2) + "</li>";
-                            $('.pagination_div .number_li_div').children(":first").before(html);
-                            bindPageClick();
-                        }
-                    }
-                    if (nextSum == 3) {
-                        $('.pagination_div .number_li_div').children(":last").remove();
-                        var html = "<li>"
-                            + (page - 1) + "</li>";
-                        $('.pagination_div  .number_li_div').children(":first").before(html);
-                        bindPageClick();
-                    }
-                    current.prev().addClass("current");
-                    current.removeClass("current");
-//                    changeTimeLine();
-                });
-                $('.to_next').click(function () {
-                    var current = $('.pagination_div  .number_li_div .current');
-                    var page = current.html();
-                    page = parseInt(page);
-                    var nextSum = current.nextAll().length;
-                    if (page == pageSum) {
-                        return false;
-                    }
-                    if (nextSum == 1) {
-                        if (page + 1 < pageSum) {
-                            $('.pagination_div  .number_li_div').children(":first").remove();
-                            var html = "<li>"
-                                + (page + 2) + "</li>";
-                            $('.pagination_div  .number_li_div').append(html);
-                            bindPageClick();
-                        }
-                    }
-                    if (nextSum == 0) {
-                        if (page != pageSum) {
-                            $('.pagination_div  .number_li_div').children(":first").remove();
-                            var html = "<li>"
-                                + (page + 1) + "</li>";
-                            $('.pagination_div  .number_li_div').append(html);
-                            bindPageClick();
-                        }
-                    }
-                    current.next().addClass("current");
-                    current.removeClass("current");
-//                    changeTimeLine();
-                });
-            }
-            function bindPageClick() {
-                $('.pagination_div .number_li_div li').click(function () {
-                    $('.current').removeClass("current");
-                    $(this).parent().addClass("current");
-//                    changeTimeLine();
-                });
-            }
+
         });
     </script>
     <style>
@@ -159,6 +63,7 @@
             transition: width ease 0.3s;
         }
         .pagination_div .number_li_div li:hover {
+            color: #00b19e;
             cursor: pointer;
         }
         .pagination_div .number_li_div .current {

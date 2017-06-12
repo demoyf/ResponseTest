@@ -177,7 +177,7 @@
 
 @media only screen and (max-width: 850px) {
     .tag_nav {
-        width: 35%;
+        width: 40%;
         font-size: 20px;
         padding: 20px 1%;
         position: fixed;
@@ -320,6 +320,17 @@
     }
     .a_blog:hover .blog_background p {
         font-size: 4.7vw;
+    }
+    .tag_nav {
+        width: 60%;
+        font-size: 20px;
+        padding: 20px 1%;
+        position: fixed;
+        left: 94% ;
+        top: 280px;
+        display: flex;
+        flex-direction: row;
+        z-index: 200;
     }
 }
 .blog_content .a_blog .blog_time {
